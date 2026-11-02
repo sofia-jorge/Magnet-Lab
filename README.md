@@ -3,7 +3,7 @@
 Simulador 2D/3D de um **eletroímã** (pilha AA + fio de cobre + parafuso de ferro) para investigar:
 **como o número de espiras (1–200) influencia a resistência, a corrente, o campo magnético e a atração?**
 
-> Projeto: Eletroímã · Engenharia de Software e Física
+> Projeto: Eletroímã · Engenharia de Software e Física · 
 > Relatório: *Análise do campo magnético e da capacidade de atração de um eletroímã aplicado a um guindaste didático em função do número de espiras.*
 > Experimentos principais: **50, 100 e 150 espiras**.
 
