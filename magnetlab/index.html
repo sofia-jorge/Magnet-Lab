@@ -1,0 +1,47 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MAGNET LAB — Laboratório Virtual de Eletromagnetismo</title><link rel="stylesheet" href="css/style.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script></head><body>
+<header><h1>MAGNET<span>LAB</span></h1><p>Laboratório Virtual de Eletromagnetismo — Eletroímã (Projeto A3 · UNA Contagem)</p></header>
+<section id="hero"><div><h2>Construa, ligue e investigue um eletroímã.</h2><p>Pilha AA + fio de cobre + parafuso de ferro. Altere o número de espiras e veja resistência, corrente e campo magnético mudarem — em 2D e 3D, com os cálculos à mostra e uma área para comparar com o seu protótipo real.</p>
+ <div class="cta"><button id="goSim">Iniciar simulação</button><button id="goFisica" class="ghost">Entender a física</button><button id="goExp" class="ghost">Experimentos A3</button></div></div></section>
+<main id="sim">
+<aside id="controls"><h2>Painel de controle</h2>
+ <div class="switches"><label><input type="checkbox" id="closed" checked> Circuito fechado</label><label><input type="checkbox" id="reversed"> Inverter corrente</label></div>
+ <div class="presets">Experimentos: <button data-n="50">50</button><button data-n="100">100</button><button data-n="150">150</button></div>
+ <div id="fields"></div><button id="reset">Restaurar padrão</button></aside>
+<section id="out">
+ <h2>Visualização</h2><div class="tabs"><button id="tab2d" class="on">2D (corte)</button><button id="tab3d">3D</button></div>
+ <div id="v2"><p class="hint">2D: arraste = mover · scroll = zoom · clique = posicionar a sonda</p><div id="view2d"></div>
+ <div class="opts3d"><label><input type="checkbox" id="o2_heat" checked> Mapa de intensidade</label><label><input type="checkbox" id="o2_field" checked> Linhas de campo</label><label><input type="checkbox" id="o2_vec"> Vetores</label><label><input type="checkbox" id="o2_cur" checked> Símbolos de corrente</label><button id="o2_reset">Enquadrar</button><button id="snap2">Salvar imagem 2D</button></div>
+ <div class="probe"><h3>Gaussímetro virtual <small>(sonda no corte 2D)</small></h3><div class="row">x <input id="px" type="number" step="0.5"> mm &nbsp; y <input id="py" type="number" step="0.5"> mm <button id="pcenter">Centro da bobina</button></div><pre id="probeOut"></pre></div></div>
+ <div id="v3" hidden><p class="hint">3D: arraste = girar · scroll = zoom · botão direito = mover</p>
+ <div id="view3d"></div>
+ <div class="opts3d"><label><input type="checkbox" id="o_field" checked> Linhas de campo</label><label><input type="checkbox" id="o_current" checked> Sentido da corrente</label><label><input type="checkbox" id="o_anim" checked> Animar</label><button id="snap">Salvar imagem 3D</button><span class="legend">cor = log|B|: <i style="background:#1b4fd8"></i>10 µT <i style="background:#27d3ff"></i> <i style="background:#ffe36b"></i>100 mT</span></div>
+ <p class="note" id="note3d"></p></div>
+ <div id="cards"></div><div id="warns"></div>
+ <h2>Memória de cálculo <small>(mesmos valores do motor)</small></h2><div id="memory"></div>
+ <h2 id="exps">EXPERIMENTOS — 50, 100 E 150 ESPIRAS <small>(calculado pelo modelo; nenhum valor medido)</small></h2><div class="scroll"><table id="cmp"></table></div>
+ <h2>Gráficos <small>(curva = modelo; ● = 50/100/150; ◆ = valor atual)</small></h2><div id="charts"></div>
+ <h2>LABORATÓRIO EXPERIMENTAL — DADOS DO PROTÓTIPO REAL <small>(valores MEDIDOS pelo grupo · vazios até você inserir · guardados separados da simulação)</small></h2>
+ <p class="note">Dica para a pilha: meça a tensão em aberto (E) e, com o circuito fechado, a tensão nos terminais (Vt) e a corrente (I). Então r<sub>interna</sub> = (E − Vt)/I. Use "Calibrar pilha" para aplicar E e r na simulação.</p>
+ <div id="tests"></div><button id="addTest">+ Adicionar teste</button>
+ <h2>Comparação: teoria × simulação × experimento <small>(simulação usa a configuração do painel, só alterando as espiras de cada teste)</small></h2>
+ <div class="scroll"><table id="cmpExp"></table></div>
+ <h2>Salvar e exportar</h2>
+ <div class="probe"><div class="row"><input id="expTitle" type="text" placeholder="Título do experimento" style="width:100%;margin-bottom:6px"></div>
+  <textarea id="expNotes" rows="3" placeholder="Observações do grupo (entram no PDF)" style="width:100%"></textarea>
+  <div class="row" style="margin-top:8px"><input id="simName" type="text" placeholder="Nome da captura" style="width:200px"><button id="saveSim">Salvar simulação no navegador</button>
+  <button id="expJSON">Exportar JSON</button><label class="filebtn">Importar JSON<input id="impJSON" type="file" accept=".json,application/json" hidden></label>
+  <button id="expCSV1">CSV simulação (1–200)</button><button id="expCSV2">CSV comparação</button><button id="expPDF">Gerar PDF</button></div>
+  <p class="note" id="stMsg"></p><div id="savedList"></div></div>
+ <h2 id="guindaste">APLICAÇÃO TECNOLÓGICA — GUINDASTE ELETROMAGNÉTICO</h2>
+ <div class="chain" id="chain"></div><div id="crane"></div>
+ <div class="opts3d"><button id="cPower">Ligar alimentação</button><label>Posição <input type="range" id="cX" min="0" max="100" value="15"></label><label>Altura <input type="range" id="cY" min="0" max="100" value="0"></label>
+  <label><input type="checkbox" id="cRes"> magnetismo residual (ilustrativo)</label><button id="cAuto">Sequência automática</button><button id="cReset">Reiniciar</button></div>
+ <p class="note">Ilustração qualitativa: a atração é liga/desliga e <b>não</b> é calculada aqui (nem o peso máximo suportado). Ao desligar a alimentação a corrente cai e o campo da bobina desaparece; o aço solta. Em núcleos reais pode sobrar <b>magnetismo residual</b> (histerese), por isso guindastes de sucata usam ferro doce e circuitos que desmagnetizam. Alumínio não é ferromagnético e não é atraído. Se o circuito do painel estiver aberto, o guindaste também fica sem campo.</p>
+ <h2 id="fisica">ENTENDA A FÍSICA</h2><div id="formulas"></div><h3 class="sub">Conceitos</h3><div id="glossary"></div>
+ <h2>Por que mais espiras não significa necessariamente mais força?</h2><div id="why"></div>
+ <p class="note">Modelo didático: núcleo por magnetização autoconsistente 1D no eixo (μr do ferro adotado, sem histerese); resistência interna da pilha é suposição até ser medida; sem aquecimento. Não substitui medições do protótipo.</p>
+</section></main><script type="module" src="js/main.js"></script></body></html>
